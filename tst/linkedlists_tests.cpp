@@ -11,7 +11,6 @@ TEST(DoublyLinkedListTest, PushFrontTest) {
     EXPECT_EQ(list.to_vector(), expected);
 }
 
-// Test: push_back should add elements to the back.
 TEST(DoublyLinkedListTest, PushBackTest) {
     DoublyLinkedList<int> list;
     list.push_back(10);
@@ -22,7 +21,6 @@ TEST(DoublyLinkedListTest, PushBackTest) {
     EXPECT_EQ(list.to_vector(), expected);
 }
 
-// Test: pop_front should remove elements from the front.
 TEST(DoublyLinkedListTest, PopFrontTest) {
     DoublyLinkedList<int> list;
     list.push_back(10);
@@ -42,7 +40,6 @@ TEST(DoublyLinkedListTest, PopFrontTest) {
     EXPECT_EQ(list.to_vector(), expected);
 }
 
-// Test: pop_back should remove elements from the back.
 TEST(DoublyLinkedListTest, PopBackTest) {
     DoublyLinkedList<int> list;
     list.push_front(10);
