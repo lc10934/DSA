@@ -4,3 +4,9 @@ CMakeUserPresets.json
 cmake-build-debug
 CMakeFiles
 .cache
+.vscode
+linkedlists.dSYM
+main.dSYM
+linkedlists
+main
+run_tests
