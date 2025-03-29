@@ -43,4 +43,5 @@ foreach (target ${RELEASE_TARGETS} ${TEST_TARGETS} ${DEBUG_TARGETS})
 endforeach()
 
 # Gtest
-target_link_libraries(DSA_tests PRIVATE gtest::gtest)
+find_package(GTest REQUIRED)
+target_link_libraries(DSA_tests PRIVATE GTest::gtest)
