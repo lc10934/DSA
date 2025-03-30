@@ -6,15 +6,21 @@ template <typename T>
 class RingBuffer {
 public:
     explicit RingBuffer(size_t capacity)
-        : buffer_(capacity), head_(0), tail_(0), full_(false)
+        : capacity_(capacity), head_(0), tail_(0), full_(false)
     {
+        buffer_ = new T[capacity_];
     }
+
+    ~RingBuffer() {
+        delete[] buffer_;
+    }
+
     void push(const T& item)
     {
         buffer_[head_] = item;
-        head_ = (head_ + 1) % buffer_.size();
+        head_ = (head_ + 1) % capacity_;
         if (full_) {
-            tail_ = (tail_ + 1) % buffer_.size();
+            tail_ = (tail_ + 1) % capacity_;
         }
         full_ = (head_ == tail_);
     }
@@ -25,7 +31,7 @@ public:
             throw std::runtime_error("RingBuffer is empty");
         }
         T item = buffer_[tail_];
-        tail_ = (tail_ + 1) % buffer_.size();
+        tail_ = (tail_ + 1) % capacity_;
         full_ = false;
         return item;
     }
@@ -43,17 +49,17 @@ public:
     size_t size() const
     {
         if (full_) {
-            return buffer_.size();
+            return capacity_;
         }
         if (head_ >= tail_) {
             return head_ - tail_;
         }
-        return buffer_.size() - tail_ + head_;
+        return capacity_ - tail_ + head_;
     }
 
     size_t capacity() const
     {
-        return buffer_.size();
+        return capacity_;
     }
 
     std::vector<T> to_vector() const
@@ -66,14 +72,15 @@ public:
         size_t index = tail_;
         for (size_t i = 0; i < count; ++i) {
             result.push_back(buffer_[index]);
-            index = (index + 1) % buffer_.size();
+            index = (index + 1) % capacity_;
         }
         return result;
     }
 
 private:
-    std::vector<T> buffer_; 
-    size_t head_;          
-    size_t tail_;           
-    bool full_;             
+    T* buffer_;         
+    size_t capacity_;   
+    size_t head_;      
+    size_t tail_;       
+    bool full_;         
 };
