@@ -1,19 +1,15 @@
 #pragma once
 #include <vector>
 #include <stdexcept>
+#include <optional>
+#include <memory>
 
 template <typename T>
 class RingBuffer {
 public:
     explicit RingBuffer(size_t capacity)
-        : capacity_(capacity), head_(0), tail_(0), full_(false)
-    {
-        buffer_ = new T[capacity_];
-    }
-
-    ~RingBuffer() {
-        delete[] buffer_;
-    }
+        : capacity_(capacity), head_(0), tail_(0), full_(false),
+          buffer_(std::make_unique<T[]>(capacity)) {}
 
     void push(const T& item)
     {
@@ -25,10 +21,10 @@ public:
         full_ = (head_ == tail_);
     }
 
-    T pop()
+    std::optional<T> pop()
     {
         if (empty()) {
-            throw std::runtime_error("RingBuffer is empty");
+            return std::nullopt;
         }
         T item = buffer_[tail_];
         tail_ = (tail_ + 1) % capacity_;
@@ -78,9 +74,9 @@ public:
     }
 
 private:
-    T* buffer_;         
-    size_t capacity_;   
-    size_t head_;      
-    size_t tail_;       
-    bool full_;         
+    std::unique_ptr<T[]> buffer_;
+    size_t capacity_;
+    size_t head_;
+    size_t tail_;
+    bool full_;
 };

@@ -27,10 +27,12 @@ TEST(RingBufferTest, PopTest) {
     for (int i = 1; i <= 5; ++i) {
         rb.push(i);
     }
-    int first = rb.pop();
-    int second = rb.pop();
-    EXPECT_EQ(first, 1);
-    EXPECT_EQ(second, 2);
+    auto first_opt = rb.pop();
+    auto second_opt = rb.pop();
+    ASSERT_TRUE(first_opt.has_value());
+    ASSERT_TRUE(second_opt.has_value());
+    EXPECT_EQ(first_opt.value(), 1);
+    EXPECT_EQ(second_opt.value(), 2);
     std::vector<int> expected = {3, 4, 5};
     EXPECT_EQ(rb.to_vector(), expected);
 }
@@ -50,11 +52,6 @@ TEST(RingBufferTest, EmptyAndFullTest) {
     
     rb.pop();
     EXPECT_FALSE(rb.full());
-}
-
-TEST(RingBufferTest, PopEmptyTest) {
-    RingBuffer<int> rb(3);
-    EXPECT_THROW(rb.pop(), std::runtime_error);
 }
 
 int main(int argc, char **argv) {
