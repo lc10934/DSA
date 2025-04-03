@@ -58,7 +58,7 @@ private:
         std::cout << "Reserving new capacity: " << newCapacity << "\n";
         auto newData = std::make_unique<T[]>(newCapacity);
         for (size_t i = 0; i < size_; i++) {
-            newData[i] = data_[i];
+            newData[i] = std::move(data_[i]);
         }
         data_ = std::move(newData);
         capacity_ = newCapacity;
