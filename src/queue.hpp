@@ -1,24 +1,28 @@
 #pragma once
-#include "deque.hpp" 
+#include "deque.hpp"  
 #include <optional>
 #include <stdexcept>
 
 template <typename T>
-class Stack {
+class Queue {
 public:
-    explicit Stack(size_t capacity = 4)
+    explicit Queue(size_t capacity = 4)
         : deque_(capacity)
     {}
 
-    void push(const T& item) {
+    void enqueue(const T& item) {
         deque_.push_back(item);
     }
 
-    std::optional<T> pop() {
-        return deque_.pop_back();
+    std::optional<T> dequeue() {
+        return deque_.pop_front();
     }
 
-    std::optional<T> top() const {
+    std::optional<T> front() const {
+        return deque_.front();
+    }
+
+    std::optional<T> back() const {
         return deque_.back();
     }
 
@@ -28,6 +32,10 @@ public:
 
     size_t size() const {
         return deque_.size();
+    }
+
+    size_t capacity() const {
+        return deque_.capacity();
     }
 
 private:
