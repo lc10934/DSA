@@ -1,5 +1,5 @@
 #pragma once
-#include <optional>
+#include <stdexcept>
 #include <memory>
 #include <iostream>
 
@@ -30,10 +30,18 @@ public:
         return data_[--size_];
     }
 
-    std::optional<T> operator[](size_t index) const
+    T& operator[](size_t index)
     {
         if (index >= size_) {
-            return std::nullopt;
+            throw std::out_of_range("Index out of bounds.");
+        }
+        return data_[index];
+    }
+
+    const T& operator[](size_t index) const
+    {
+        if (index >= size_) {
+            throw std::out_of_range("Index out of bounds.");
         }
         return data_[index];
     }

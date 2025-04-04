@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 #include <optional>
 #include <string>
-#include "../src/vector.hpp"
+#include "../src/vector.hpp" 
 
-struct Person
-{
+struct Person {
     std::string name;
     int age;
     Person() : name(""), age(0) {} 
@@ -17,11 +16,11 @@ TEST(VectorTest, InitializeTest)
     auto v = Vector<int>();
     ASSERT_EQ(v.size(), 0);
     ASSERT_EQ(v.capacity(), 2);
-    ASSERT_EQ(v[0], std::nullopt);
+    EXPECT_THROW(v[0], std::out_of_range);
     v.push_back(1);
     ASSERT_EQ(v[0], 1);
-    ASSERT_EQ(v[1], std::nullopt);
-    ASSERT_EQ(v[2], std::nullopt);
+    EXPECT_THROW(v[1], std::out_of_range);
+    EXPECT_THROW(v[2], std::out_of_range);
 }
 
 TEST(VectorTest, PopTest)
@@ -29,7 +28,7 @@ TEST(VectorTest, PopTest)
     auto v = Vector<int>();
     ASSERT_EQ(v.pop(), std::nullopt);
     v.push_back(1);
-    ASSERT_EQ(1, v.pop());
+    ASSERT_EQ(v.pop(), 1);
     ASSERT_EQ(v.size(), 0);
     ASSERT_EQ(v.capacity(), 2);
 }
@@ -38,7 +37,7 @@ TEST(VectorTest, CharTest)
 {
     auto v = Vector<char>();
     v.push_back('a');
-    ASSERT_EQ('a', v.pop());
+    ASSERT_EQ(v.pop(), 'a');
     ASSERT_EQ(v.size(), 0);
     ASSERT_EQ(v.capacity(), 2);
 }
@@ -47,7 +46,7 @@ TEST(VectorTest, StringTest)
 {
     auto v = Vector<std::string>();
     v.push_back("Test");
-    ASSERT_EQ("Test", v.pop());
+    ASSERT_EQ(v.pop(), "Test");
     ASSERT_EQ(v.size(), 0);
     ASSERT_EQ(v.capacity(), 2);
 }
@@ -66,8 +65,7 @@ TEST(VectorTest, ResizeAndAccessBeyondInitialCapacity)
     {
         ASSERT_EQ(v[i], i);
     }
-
-    ASSERT_EQ(v[10], std::nullopt);
+    EXPECT_THROW(v[10], std::out_of_range);
 }
 
 TEST(VectorTest, MultiplePops)
@@ -130,4 +128,18 @@ TEST(VectorTest, AlternatingPushPop)
     ASSERT_EQ(v.size(), 2);
     ASSERT_EQ(v[0], "B");
     ASSERT_EQ(v[1], "D");
+}
+
+TEST(VectorTest, Bruh)
+{
+    Vector<int> v;
+    for (int i = 0; i < 10; ++i)
+    {
+        v.push_back(i);
+    }
+    ASSERT_EQ(v.size(), 10);
+    ASSERT_GE(v.capacity(), 10);
+    
+    v[6] = 2;
+    ASSERT_EQ(v[6], 2);
 }
