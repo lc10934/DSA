@@ -1,82 +1,97 @@
 #pragma once
-#include "ringbuffer.hpp"  
-#include <vector>
 #include <optional>
-#include <stdexcept>
 #include <memory>
 #include <iostream>
+#include <stdexcept>
 
 template <typename T>
 class Deque {
 public:
     explicit Deque(size_t capacity = 4)
-        : ringBuffer_(capacity)
+        : capacity_(capacity), size_(0), front_index_(0),
+          data_(std::make_unique<T[]>(capacity))
     {}
 
     void push_back(const T& item) {
-        ringBuffer_.push(item);
-    }
-
-    std::optional<T> pop_front() {
-        return ringBuffer_.pop();
-    }
-
-    std::optional<T> front() const {
-        std::vector<T> elems = ringBuffer_.to_vector();
-        if (elems.empty()) {
-            return std::nullopt;
+        if (size_ == capacity_) {
+            resize(capacity_ + capacity_ / 2);
         }
-        return elems.front();
+        size_t back_index = (front_index_ + size_) % capacity_;
+        data_[back_index] = item;
+        ++size_;
     }
 
     void push_front(const T& item) {
-        std::vector<T> elems = ringBuffer_.to_vector();
-        elems.insert(elems.begin(), item); 
-        rebuild_buffer(elems);
+        if (size_ == capacity_) {
+            resize(capacity_ + capacity_ / 2);
+        }
+        front_index_ = (front_index_ + capacity_ - 1) % capacity_;
+        data_[front_index_] = item;
+        ++size_;
     }
 
-    std::optional<T> pop_back() {
-        std::vector<T> elems = ringBuffer_.to_vector();
-        if (elems.empty()) {
+    std::optional<T> pop_front() {
+        if (empty()) {
             return std::nullopt;
         }
-        T item = elems.back();
-        elems.pop_back();
-        rebuild_buffer(elems);
+        T item = data_[front_index_];
+        front_index_ = (front_index_ + 1) % capacity_;
+        --size_;
         return item;
     }
 
-    std::optional<T> back() const {
-        std::vector<T> elems = ringBuffer_.to_vector();
-        if (elems.empty()) {
+    std::optional<T> pop_back() {
+        if (empty()) {
             return std::nullopt;
         }
-        return elems.back();
+        size_t back_index = (front_index_ + size_ - 1) % capacity_;
+        T item = data_[back_index];
+        --size_;
+        return item;
+    }
+
+    std::optional<T> front() const {
+        if (empty()) {
+            return std::nullopt;
+        }
+        return data_[front_index_];
+    }
+
+    std::optional<T> back() const {
+        if (empty()) {
+            return std::nullopt;
+        }
+        size_t back_index = (front_index_ + size_ - 1) % capacity_;
+        return data_[back_index];
     }
 
     bool empty() const {
-        return ringBuffer_.empty();
+        return size_ == 0;
     }
 
     size_t size() const {
-        return ringBuffer_.size();
+        return size_;
     }
 
     size_t capacity() const {
-        return ringBuffer_.capacity();
+        return capacity_;
     }
 
 private:
-    void rebuild_buffer(const std::vector<T>& elems) {
-        size_t newCapacity = ringBuffer_.capacity();
-        if (elems.size() > newCapacity) {
-            newCapacity = elems.size();
+    void resize(size_t newCapacity) {
+        std::cout << "Resizing deque from " << capacity_
+                  << " to " << newCapacity << "\n";
+        auto newData = std::make_unique<T[]>(newCapacity);
+        for (size_t i = 0; i < size_; ++i) {
+            newData[i] = data_[(front_index_ + i) % capacity_];
         }
-        ringBuffer_ = RingBuffer<T>(newCapacity);
-        for (const auto &e : elems) {
-            ringBuffer_.push(e);
-        }
+        data_ = std::move(newData);
+        capacity_ = newCapacity;
+        front_index_ = 0;
     }
 
-    RingBuffer<T> ringBuffer_;
+    std::unique_ptr<T[]> data_;
+    size_t capacity_;
+    size_t size_;
+    size_t front_index_;  
 };
