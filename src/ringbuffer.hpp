@@ -10,8 +10,7 @@ class RingBuffer {
 public:
     explicit RingBuffer(size_t capacity)
         : capacity_(capacity), head_(0), tail_(0), full_(false),
-          buffer_(std::make_unique<T[]>(capacity))
-    {}
+          buffer_(std::make_unique<T[]>(capacity)){}
 
     void push(const T& item)
     {
