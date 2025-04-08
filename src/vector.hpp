@@ -46,12 +46,12 @@ public:
         return data_[index];
     }
 
-    size_t size() const
+    const size_t size() const
     {
         return size_;
     }
 
-    size_t capacity() const
+    const size_t capacity() const
     {
         return capacity_;
     }
