@@ -26,15 +26,15 @@ public:
         return deque_.back();
     }
 
-    bool empty() const {
+    const bool empty() const {
         return deque_.empty();
     }
 
-    size_t size() const {
+    const size_t size() const {
         return deque_.size();
     }
 
-    size_t capacity() const {
+    const size_t capacity() const {
         return deque_.capacity();
     }
 
