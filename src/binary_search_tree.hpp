@@ -27,6 +27,9 @@ public:
     }
     
     const T& findMin() const {
+        if (empty()) {
+            throw std::out_of_range("Empty tree");
+        }
         TreeNode<T>* node = root.get();
         while (node->children[0]) {
             node = node->children[0].get();
