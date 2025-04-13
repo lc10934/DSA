@@ -30,19 +30,19 @@ public:
         ++size_;
     }
 
-    std::optional<T> pop_front() {
+    T pop_front() {
         if (empty()) {
-            return std::nullopt;
+            throw std::out_of_range("No items to pop from front.");
         }
         T item = data_[front_index_];
         front_index_ = (front_index_ + 1) % capacity_;
         --size_;
         return item;
     }
-
-    std::optional<T> pop_back() {
+    
+    T pop_back() {
         if (empty()) {
-            return std::nullopt;
+            throw std::out_of_range("No items to pop from back.");
         }
         size_t back_index = (front_index_ + size_ - 1) % capacity_;
         T item = data_[back_index];
@@ -69,7 +69,7 @@ public:
         return size_ == 0;
     }
 
-    const size_t size() const {
+    size_t size() const {
         return size_;
     }
 
