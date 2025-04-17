@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/linkedlists.cpp" 
+#include "../src/linkedlists.hpp" 
 
 TEST(DoublyLinkedListTest, PushFrontTest) {
     DoublyLinkedList<int> list;
