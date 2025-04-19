@@ -67,7 +67,3 @@ TEST(QueueTest, FrontBackOnEmptyQueue) {
     EXPECT_FALSE(q.back().has_value());
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

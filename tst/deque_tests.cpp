@@ -103,7 +103,4 @@ TEST(DequeTest, PopOnEmptyDeque) {
     EXPECT_FALSE(dq.pop_back().has_value());
 }
   
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+

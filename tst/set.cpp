@@ -62,7 +62,4 @@ TEST(SetTest, CustomType) {
     EXPECT_EQ(out[2].age, 35);
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+
