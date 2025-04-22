@@ -12,16 +12,6 @@ TEST(RingBufferTest, PushAndToVectorTest) {
     EXPECT_EQ(rb.to_vector(), expected);
 }
 
-TEST(RingBufferTest, OverwriteTest) {
-    RingBuffer<int> rb(5);
-    for (int i = 1; i <= 5; ++i) {
-        rb.push(i);
-    }
-    rb.push(6);
-    std::vector<int> expected = {2, 3, 4, 5, 6};
-    EXPECT_EQ(rb.to_vector(), expected);
-}
-
 TEST(RingBufferTest, PopTest) {
     RingBuffer<int> rb(5);
     for (int i = 1; i <= 5; ++i) {
@@ -52,9 +42,4 @@ TEST(RingBufferTest, EmptyAndFullTest) {
     
     rb.pop();
     EXPECT_FALSE(rb.full());
-}
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

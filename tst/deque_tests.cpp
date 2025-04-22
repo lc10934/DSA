@@ -71,7 +71,3 @@ TEST(DequeTest, PopOnEmptyDequeThrows) {
     EXPECT_THROW(dq.pop_back(), std::out_of_range);
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

@@ -44,4 +44,4 @@ endforeach()
 
 # Gtest
 find_package(GTest REQUIRED)
-target_link_libraries(DSA_tests PRIVATE GTest::gtest)
+target_link_libraries(DSA_tests PRIVATE GTest::gtest_main)
